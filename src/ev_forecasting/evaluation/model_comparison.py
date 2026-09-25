@@ -79,9 +79,6 @@ class ModelComparator:
         baseline_rmse = (
             float(baseline_row["rmse_mean"].iloc[0]) if not baseline_row.empty else float("inf")
         )
-        (
-            float(baseline_row["mae_mean"].iloc[0]) if not baseline_row.empty else float("inf")
-        )
 
         eligible_models = []
         for _, row in h_df.iterrows():

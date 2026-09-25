@@ -1,0 +1,12 @@
+# Production Configuration
+environment: "production"
+tracking_uri: "${MLFLOW_TRACKING_URI:-postgresql://postgres:postgres@mlflow-db:5432/mlflow}"
+database_url: "${DATABASE_URL:-postgresql://postgres:postgres@audit-db:5432/ev_forecasting}"
+
+ingestion:
+  max_files_per_site: 5000
+  fetch_remote_if_missing: true
+
+backtesting:
+  n_folds: 5
+  step_hours: 168

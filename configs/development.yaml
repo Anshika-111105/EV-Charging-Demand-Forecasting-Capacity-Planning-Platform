@@ -1,0 +1,13 @@
+# Development Configuration
+environment: "development"
+tracking_uri: "sqlite:///./mlflow.db"
+database_url: "sqlite:///./audit.db"
+
+# We use representative sessions in dev for fast turnaround
+ingestion:
+  max_files_per_site: 60
+  fetch_remote_if_missing: true
+
+backtesting:
+  n_folds: 3
+  step_hours: 168

@@ -1,0 +1,26 @@
+{
+  "validated_at": "2026-09-22T15:32:47.906770+00:00",
+  "status": "FAIL",
+  "hourly_report": {
+    "total_records": 2,
+    "unique_stations": 1,
+    "unique_sites": 1,
+    "time_range_start": "2020-01-01 08:00:00+00:00",
+    "time_range_end": "2020-01-01 08:00:00+00:00",
+    "null_counts": {
+      "station_id": 0,
+      "site_id": 0,
+      "timestamp": 0,
+      "energy_demand_kwh": 0
+    },
+    "duplicate_station_timestamps": 1,
+    "negative_energy_records": 0,
+    "unusually_high_spikes": 0,
+    "missing_hours_count": 0,
+    "status": "FAIL",
+    "critical_errors": [
+      "Found 1 duplicate (station_id, timestamp) records"
+    ],
+    "warnings": []
+  }
+}

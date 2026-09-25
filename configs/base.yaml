@@ -1,0 +1,121 @@
+# Base Configuration for EV Demand Forecasting & Capacity Planning Platform
+
+dataset:
+  name: "ACN-Data"
+  source_url: "https://ev.caltech.edu/dataset"
+  static_snapshot_url: "https://raw.githubusercontent.com/tongxin-li/ACN-Data-Static/main"
+  version: "1.0.0"
+  target_variable: "energy_demand_kwh"
+  frequency: "1h"
+  timezone: "UTC"
+  sites:
+    - site_id: "caltech"
+      name: "Caltech Garage"
+      location: "California_Garage_01"
+      nominal_voltage_v: 208
+      default_station_capacity_kwh: 50.0
+    - site_id: "jpl"
+      name: "JPL Arroyo Garage"
+      location: "Arroyo_Garage_01"
+      nominal_voltage_v: 208
+      default_station_capacity_kwh: 50.0
+    - site_id: "office_01"
+      name: "Office Facility"
+      location: "Parking_Lot_01"
+      nominal_voltage_v: 208
+      default_station_capacity_kwh: 50.0
+
+paths:
+  raw_data_dir: "data/raw"
+  interim_data_dir: "data/interim"
+  processed_data_dir: "data/processed"
+  manifest_dir: "data/manifests"
+  reports_dir: "reports"
+  figures_dir: "reports/figures"
+  metrics_dir: "reports/metrics"
+  backtests_dir: "reports/backtests"
+  model_cards_dir: "reports/model_cards"
+  model_artifacts_dir: "models/checkpoints"
+
+features:
+  version: "v1.0"
+  calendar:
+    include_hour: true
+    include_day_of_week: true
+    include_day_of_month: true
+    include_month: true
+    include_is_weekend: true
+    include_cyclical: true
+  lags:
+    hours: [1, 2, 3, 24, 48, 72, 168]
+  rolling:
+    windows: [24, 168]
+    statistics: ["mean", "std", "min", "max"]
+
+splitting:
+  train_ratio: 0.70
+  validation_ratio: 0.15
+  test_ratio: 0.15
+  random_seed: 42
+
+backtesting:
+  horizons: [24, 48, 168]
+  primary_horizon: 168
+  min_train_hours: 720  # 30 days
+  step_hours: 168        # 7 days expanding step
+  n_folds: 3
+
+models:
+  baseline:
+    seasonal_periods: [24, 168]
+  arima:
+    order: [2, 1, 1]
+  sarima:
+    order: [1, 1, 1]
+    seasonal_order: [1, 0, 1, 24]
+  prophet:
+    growth: "linear"
+    daily_seasonality: true
+    weekly_seasonality: true
+    yearly_seasonality: false
+  xgboost:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    random_state: 42
+
+registry:
+  experiment_name: "ev_demand_forecasting"
+  registered_model_name: "ev_charging_demand_forecaster"
+  tracking_uri: "sqlite:///./mlflow.db"
+  promotion_criteria:
+    max_mape_threshold: 30.0  # Zero-safe MAPE
+    must_beat_baseline: true
+    baseline_model: "seasonal_naive_168"
+    metric_priority: ["rmse", "mae", "mape"]
+
+capacity:
+  default_station_capacity_kwh: 50.0
+  thresholds:
+    low: 70.0
+    medium: 85.0
+    high: 95.0
+  scenarios:
+    - name: "Current Capacity"
+      multiplier: 1.0
+    - name: "+10% Capacity"
+      multiplier: 1.10
+    - name: "+20% Capacity"
+      multiplier: 1.20
+    - name: "+50% Capacity"
+      multiplier: 1.50
+
+monitoring:
+  drift_significance_level: 0.05
+  psi_threshold_moderate: 0.10
+  psi_threshold_significant: 0.25
+  retraining_policy:
+    min_new_samples: 168
+    performance_degradation_pct: 15.0

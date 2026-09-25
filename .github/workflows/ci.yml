@@ -1,0 +1,58 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff
+      - name: Run Ruff Lint
+        run: ruff check .
+      - name: Run Ruff Format Check
+        run: ruff format --check .
+
+  test-suite:
+    needs: lint-and-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+      - name: Run Unit Tests
+        run: pytest tests/unit/ -v
+      - name: Run Data & Leakage Tests
+        run: pytest tests/data/ -v
+      - name: Run Model & Evaluation Tests
+        run: pytest tests/models/ tests/evaluation/ -v
+      - name: Run API Tests
+        run: pytest tests/api/ -v
+      - name: Run Integration & E2E Pipeline Tests
+        run: pytest tests/integration/ tests/e2e/ -v --cov=src/ev_forecasting --cov-report=xml
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false

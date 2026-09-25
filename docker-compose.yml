@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  audit-db:
+    image: postgres:15-alpine
+    container_name: ev-audit-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: ev_forecasting
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mlflow-tracking:
+    image: ghcr.io/mlflow/mlflow:v2.10.0
+    container_name: ev-mlflow
+    ports:
+      - "5000:5000"
+    command: mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlflow/artifacts --host 0.0.0.0 --port 5000
+    volumes:
+      - mlflow_data:/mlflow
+
+  api:
+    build: .
+    container_name: ev-forecast-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DATABASE_URL=postgresql://postgres:postgrespassword@audit-db:5432/ev_forecasting
+      - MLFLOW_TRACKING_URI=http://mlflow-tracking:5000
+    depends_on:
+      audit-db:
+        condition: service_healthy
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./reports:/app/reports
+
+  dashboard:
+    build: .
+    container_name: ev-forecast-dashboard
+    command: streamlit run app/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    volumes:
+      - ./data:/app/data
+      - ./reports:/app/reports
+
+volumes:
+  postgres_data:
+  mlflow_data:

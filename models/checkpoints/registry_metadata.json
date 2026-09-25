@@ -1,0 +1,23 @@
+{
+  "model_name": "sarima",
+  "model_type": "statistical",
+  "model_version": "v20260922_152647",
+  "stage": "Production",
+  "promoted_at": "2026-09-22T15:26:47.983430+00:00",
+  "mlflow_run_id": "f43720560ac54181919c99da5377eda5",
+  "dataset_hash": "ba37156dd9d3dd49a96db65b2189aa85bf30140623bc9d4e6e6dd797a7b7952b",
+  "feature_version": "v1.0",
+  "target_variable": "energy_demand_kwh",
+  "metrics": {
+    "model_name": "sarima",
+    "model_type": "statistical",
+    "rmse": 0.08446281772907223,
+    "mae": 0.048604289417085444,
+    "mape": 4.860428941708544,
+    "beats_baseline": true,
+    "composite_score": 0.07011940640427752
+  },
+  "model_artifact_path": "models\\checkpoints\\production_model.pkl",
+  "versioned_artifact_path": "models\\checkpoints\\sarima_v20260922_152647.pkl",
+  "feature_columns": []
+}

@@ -1,0 +1,28 @@
+# Test Configuration
+environment: "test"
+tracking_uri: "sqlite:///./mlflow_test.db"
+database_url: "sqlite:///./audit_test.db"
+
+paths:
+  raw_data_dir: "data/sample/raw"
+  interim_data_dir: "data/sample/interim"
+  processed_data_dir: "data/sample/processed"
+  manifest_dir: "data/sample/manifests"
+  reports_dir: "data/sample/reports"
+  figures_dir: "data/sample/reports/figures"
+  metrics_dir: "data/sample/reports/metrics"
+  backtests_dir: "data/sample/reports/backtests"
+  model_cards_dir: "data/sample/reports/model_cards"
+  model_artifacts_dir: "data/sample/models"
+
+backtesting:
+  horizons: [24]
+  primary_horizon: 24
+  min_train_hours: 120
+  step_hours: 24
+  n_folds: 2
+
+models:
+  xgboost:
+    n_estimators: 20
+    max_depth: 3

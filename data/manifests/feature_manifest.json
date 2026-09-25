@@ -1,0 +1,53 @@
+{
+  "feature_version": "v1.0",
+  "generated_at": "2026-09-22T15:28:01.514371+00:00",
+  "total_features": 32,
+  "feature_names": [
+    "hour",
+    "hour_sin",
+    "hour_cos",
+    "day_of_week",
+    "day_of_week_sin",
+    "day_of_week_cos",
+    "day_of_month",
+    "month",
+    "month_sin",
+    "month_cos",
+    "is_weekend",
+    "lag_1h",
+    "lag_2h",
+    "lag_3h",
+    "lag_24h",
+    "lag_48h",
+    "lag_72h",
+    "lag_168h",
+    "rolling_mean_24h",
+    "rolling_std_24h",
+    "rolling_min_24h",
+    "rolling_max_24h",
+    "rolling_mean_168h",
+    "rolling_std_168h",
+    "rolling_min_168h",
+    "rolling_max_168h",
+    "station_id_caltech_123",
+    "station_id_jpl_178",
+    "station_id_office_01_260",
+    "site_id_caltech",
+    "site_id_jpl",
+    "site_id_office_01"
+  ],
+  "lag_hours": [
+    1,
+    2,
+    3,
+    24,
+    48,
+    72,
+    168
+  ],
+  "rolling_windows": [
+    24,
+    168
+  ],
+  "sample_count": 22377
+}

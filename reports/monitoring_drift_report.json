@@ -1,0 +1,41 @@
+{
+  "status": "HEALTHY",
+  "retraining_recommended": false,
+  "alert_message": "System is healthy. No significant distribution drift detected.",
+  "drift_features_evaluated": 4,
+  "high_drift_count": 0,
+  "drift_report": [
+    {
+      "feature_name": "energy_demand_kwh",
+      "psi_score": 0.0,
+      "ks_statistic": 0.0087,
+      "p_value": 0.921877,
+      "drift_detected": false,
+      "severity": "LOW"
+    },
+    {
+      "feature_name": "lag_1h",
+      "psi_score": 0.0,
+      "ks_statistic": 0.0085,
+      "p_value": 0.934224,
+      "drift_detected": false,
+      "severity": "LOW"
+    },
+    {
+      "feature_name": "lag_24h",
+      "psi_score": 0.0,
+      "ks_statistic": 0.007,
+      "p_value": 0.990331,
+      "drift_detected": false,
+      "severity": "LOW"
+    },
+    {
+      "feature_name": "rolling_mean_24h",
+      "psi_score": 0.0,
+      "ks_statistic": 0.0212,
+      "p_value": 0.056384,
+      "drift_detected": false,
+      "severity": "LOW"
+    }
+  ]
+}

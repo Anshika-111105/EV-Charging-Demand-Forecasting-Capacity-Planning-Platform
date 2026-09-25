@@ -1,0 +1,21 @@
+{
+  "dataset_name": "ACN-Data",
+  "version": "1.0.0",
+  "source_url": "https://ev.caltech.edu/dataset",
+  "static_snapshot_url": "https://raw.githubusercontent.com/tongxin-li/ACN-Data-Static/main",
+  "ingested_at": "2026-09-22T15:21:50.988979+00:00",
+  "sha256": "ba37156dd9d3dd49a96db65b2189aa85bf30140623bc9d4e6e6dd797a7b7952b",
+  "total_files": 180,
+  "total_bytes": 4653194,
+  "sites": [
+    "caltech",
+    "jpl",
+    "office_01"
+  ],
+  "stations_count": 3,
+  "stations": [
+    "caltech_123",
+    "jpl_178",
+    "office_01_260"
+  ]
+}

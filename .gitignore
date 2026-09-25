@@ -61,6 +61,9 @@ data/processed/*
 models/checkpoints/*
 !models/checkpoints/.gitkeep
 !models/checkpoints/registry_metadata.json
+notebooks/data/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
 
 # SQLite local database
 *.db

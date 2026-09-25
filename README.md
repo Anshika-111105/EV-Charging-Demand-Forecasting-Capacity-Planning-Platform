@@ -11,36 +11,7 @@ A **production-grade Machine Learning forecasting and capacity risk planning pla
 
 ## Architecture Overview
 
-```mermaid
-flowchart TD
-    subgraph Data Layer
-        ACN[ACN-Data Raw Sessions] --> Ingest[Ingestion Pipeline]
-        Ingest --> Clean[Validation Gates & Cleaning]
-        Clean --> Grid[Continuous Hourly Aggregation]
-        Grid --> Feat[Causal Feature Engineering (32 Feats)]
-    end
-
-    subgraph ML & Evaluation Layer
-        Feat --> Split[Temporal Isolation Split]
-        Split --> Backtest[Expanding-Window Walk-Forward Backtesting]
-        Backtest --> Baseline[Seasonal Naive 24/168]
-        Backtest --> Stats[ARIMA / SARIMA]
-        Backtest --> Prop[Prophet GAM]
-        Backtest --> XGB[Global XGBoost]
-        Baseline & Stats & Prop & XGB --> Eval[Zero-Demand Safe Metrics]
-        Eval --> MLflow[MLflow Experiment Tracking]
-        Eval --> Gate[Model Promotion Quality Gate]
-        Gate --> Registry[Production Model Checkpoint]
-    end
-
-    subgraph Decision & Serving Layer
-        Registry --> Engine[Capacity Risk & Scenario Engine]
-        Engine --> API[FastAPI REST Microservice]
-        Engine --> UI[Streamlit Interactive Dashboard]
-        API & UI --> Audit[(Audit Log & Lineage DB)]
-        Grid & Feat --> Monitor[Continuous KS-Test & PSI Drift Monitoring]
-    end
-```
+![Platform Architecture Diagram](image.png)
 
 ---
 
